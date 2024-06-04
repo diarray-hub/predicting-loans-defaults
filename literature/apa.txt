@@ -1,0 +1,12 @@
+Dask Development Team (2016). Dask: Library for dynamic task scheduling
+URL http://dask.pydata.org
+
+Kanter, J. M., & Veeramachaneni, K. (2015). Deep feature synthesis: Towards automating data science endeavors. In 2015 IEEE International Conference on Data Science and Advanced Analytics (DSAA) (pp. 1-10). IEEE.
+
+1. Russell, S. J., & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach* (4th ed.). Pearson. http://aima.cs.berkeley.edu/
+
+2. Nielsen, M. A. (2018). *Neural Networks and Deep Learning*. http://neuralnetworksanddeeplearning.com/
+
+3. Odegua, R. (2020). Predicting bank loan default with extreme gradient boosting. *arXiv preprint arXiv:2002.02011*.
+
+4. Friedman, J. H. (2001). Greedy function approximation: A gradient boosting machine. *Annals of Statistics*, *29*(5), 1189–1232. JSTOR.
