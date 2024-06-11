@@ -1,0 +1,29 @@
+\section{Évaluation comparative}
+\label{chap5.section2}
+Les quatres modèles de classification: la régression logistique (section \ref{chap4.section6}), la forêt aléatoire (section \ref{chap4.section3}), le boost de gradient (section \ref{chap4.section4}), et les réseaux de neuronnes artificiels (section \ref{chap4.section7}) ont été entraînés et ajustés sur 95\% des données fournies par Home Credit Group et testés sur les 5\% restants (soit à peu près 77.000 exemples).
+
+La détection d'anomalies avec les machines à vecteur de support (section \ref{chap4.section8}) a été entraîné sur seulement 100.000 exemples de la classe majoritaire (classe 0), faute de moyen de calcul plus rapides et testé sur un ensemble qui contient tous les exemples de la classe minoritaire (classe 1) et 5\% des exemples de la classe majoritaire (soit 121.928 exemples). La table \ref{tab:tab3} présente les résultats des tests des cinq modèles dans la tâche de prédire les défauts de paiement sur leur ensemble de test respectifs, les valeurs de chaque métriques varient entre 0 et 1, avec 0 le plus mauvais score et 1 le meilleur.
+
+\begin{table}
+    \centering
+    \begin{tabular}{ c|c|c|c|c| }
+         & Accuracy & AUC & Precision & Recall \\
+         \hline
+        Réseau de neuronnes & 0.71494 & 0.76158 & 0.07244 & 0.69391 \\
+        \hline
+        Régression logistique & 0.69963 & 0.75756 & 0.06981 & 0.67919 \\
+        \hline
+        Boost de gradient & 0.81804 & \textbf{0.83436} & 0.11017 & 0.6608 \\
+        \hline
+        Forêt aléatoire & \textbf{0.81872} & 0.80397 & 0.10379 & 0.60972 \\
+        \hline
+        Détection d'anomalies & 0.54393 & 0.5705 & \textbf{0.44624} & \textbf{0.7174} \\
+        \hline
+    \end{tabular}
+    \caption{Tableau comparatif des modèles}
+    \label{tab:tab3}
+\end{table}
+
+Les meilleurs scores pour chaque métrique sont en gras. On remarque que les modèles de classification se valent globalement bien que parmi eux le Boost de gradient se démarque avec tous les métriques et conforte un peu plus la réputation qu'on lui connait pour la tâche de prédiction des défauts de paiement. Parmi les modèles de classification ceux qui ont le meilleur rappel sont le réseau de neuronnes et la régression logistique mais avec moins de 10\% de précision c'est finalement assez maigre. Notez que ces résultats sont à la suite d'une validation croisé que j'ai éffectué et ne sont donc pas dépendants d'un ensemble spécifique d'entraînement ou de test.
+
+Le modèle de détection d'anomalies quant à lui mérite une attention particulière. J'avais voulu testé cet algorithme pour une tâche de classification pour avoir un modèle qui maximise les chances de reconnaître la classe positive. Avec de tels scores de rappel et de précision, on peut considérer le test satisfaisant mais il est important de noter qu'il a été testé sur beaucoup plus de données que les modèles de classification alors qu'il a été entraîné sur beaucoup moins, de quoi relativiser les stats de justesse de classification et de l'AUC.

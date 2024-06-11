@@ -1,0 +1,131 @@
+\documentclass[a4paper,12pt,twoside]{report}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% !!Preambule!! %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% PACKAGES %%%
+
+\usepackage[french]{babel}
+\usepackage{fontspec} % use to tune font style
+\usepackage{fancyhdr} % required for the page header-footer formatting
+% Libertinus fonts
+\usepackage{libertinus-otf}
+% for figures
+\usepackage{graphicx}
+
+%%% BIBLIOGRAPHY %%%
+
+% Configuring the bibliography (see biblatex documentation if need more details)
+\usepackage[
+sorting=nyt,
+style=apa,
+backend=biber
+]{biblatex}
+\addbibresource{bib.bib}
+
+%%% PAGE HEADERS AND FOOTERS %%%
+
+% !!! the narrow margins are inner margins, while the wider margins are outer margins
+% odd-numbered pages  1,3,5,... right side >>> __text____
+% even-numbered pages 2,4,6,... left side  >>> ____text__
+% see https://en.wikipedia.org/wiki/Canons_of_page_construction
+
+% page layout and margins are left at default settings
+
+\pagestyle{fancy}
+
+% this is here only so LaTeX does not complain
+\setlength{\headheight}{15pt}
+
+% the aim here is to have section names in the headings on the inner side
+% the way I think this works is:
+% when evaluating the \section[shortName]{fullName} command in the text, there is a \sectionmark command inside.
+% calling \markboth like below changes the current heading to shortName
+% works the same for chapters, both commands are redefined to cover the cases where the chapter does not contain a section immediately
+% !!! asterisk commands and table of contents do not contain marks, so you need to do it manually (see the main text)
+\renewcommand{\chaptermark}[1]{\markboth{\normalfont\sffamily\textsc{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markboth{\normalfont\sffamily\textsc{#1}}{}}
+
+% remove page numbers from the footer and put it into the header (outer side)
+\fancyfoot{}
+\fancyhf[HLE,HRO]{\thepage}
+
+% redefine plain style to be compatible with fancy (beginning of chapters)
+\fancypagestyle{plain}{ %
+  \fancyhf{} % remove everything
+  \renewcommand{\headrulewidth}{0pt} % remove lines as well
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+%%% Title, author and date %%%%
+\title{Conception d'un Modèle de Prédiction des Défauts de Paiement sur les Prêts: Approches, Algorithmes et Évaluation comparative}
+\author{Yacouba Diarra}
+\date{Juin 2024}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\pagenumbering{roman} % Set page numbering style to roman 
+\pagestyle{empty}
+
+\maketitle
+\vspace{1cm}
+
+\begin{abstract}
+La démocratisation des prêts bancaire fut un pilier fondamental pour l'économie moderne. De par leur prêts, les banques et autres institutions financières ont pu aider des centaines de millions de personnes à s'offrir une résidence, payer des frais médicaux, un enseignement supérieur, créer une entreprise et j'en passe. Différents systèmes de prêts ont d'ailleurs depuis longtemps supporter une grande partie de l'économie dans diverses civilisations au cours de l'histoire mais il est clair qu'ils n'ont jamais été aussi fondamentaux au point d'inspirer la création de modèles économiques entiers autour d'eux.
+
+Ceci étant dit, ils comportent un risque majeur que les institutions financières et juridiques ont toujours cherché à minimiser: \textit{les défauts de paiement}. La décision d'accorder ou non un prêt à tel individu ou tel organisation est une tâche délicate qui nécessite beaucoup d'attention, car s'il est vrai qu'un prêt peut changer la vie de quelqu'un, des mauvaises décisions répétées représente un risque sérieux pour la stabilité de l'institution prêteuse et un fardeau pésant pour le client.
+
+Dans ce mémoire, je propose une étude approfondie des dernières méthodes employées par ces institutions pour attester la capacité de remboursement des clients, visant à prédire quels clients présentent le plus de risque de faire défaut sur un prêt grâce à l'apprentissage automatique.
+
+\vspace{5mm}
+
+\noindent\textbf{Mots-clés:} Défaut de payement, Science des données, Apprentissage automatique
+
+\end{abstract}
+
+\clearpage
+
+\vfil
+
+\centerline{\Large Remerciements}
+
+\bigskip
+
+\noindent
+Ça fait probablement un peu cliché de dire ça mais bien évidemment les premières personnes que je tiens à remercier dans ce document ce sont mes parents, ça a commencé au jardin d'enfants et aujourd'hui c'est pour un diplôme de licence donc merci. Ensuite je tiens à remercier Robots Mali pour un stage qui, sans mentir, a changé ma vie et considérablement élargi mes horizons. Un remerciement spécial aussi pour mon directeur de mémoire, Dr Maïga Oumar pour sa contribution aux recherches et sa supervision. Aussi à mes camarades de classe pour les expériences qu'on a partagé durant presque 3 ans maintenant, je n'ai aucun doute que ces expériences ont aussi servi à rédiger ce mémoire. 
+
+Merci à Kaggle et à Home Credit Group pour l'environnement de travail et les données que j'ai utilisé pour mes recherches et plus généralement pour leur contibution à la communauté Machine learning et IA.
+
+Enfin merci à toutes les personnes qui ont pris part à la relecture du document pour leur retours et leur aide pour améliorer la qualité et la clarté de ce mémoire.
+
+\vfil
+
+\clearpage
+
+\pagestyle{fancy}
+
+\tableofcontents % Create the Table of contents
+\markboth{\textsc{Table des matières}}{}
+\addcontentsline{toc}{chapter}{Avant-propos}
+
+\input{preface/preface}
+
+\pagestyle{empty}
+\pagenumbering{arabic} % set page numbering style to arabic
+\pagestyle{fancy}
+
+%%%% MAIN TEXT BEGINS %%%%
+
+\part{Introduction} % First part of the Book
+\input{chapter1/chapter1}
+\input{chapter2/chapter2}
+\part{Méthodologie} % second part
+\input{chapter3/chapter3}
+\input{chapter4/chapter4}
+\input{chapter5/chapter5}
+\part{Conclusion} % final part
+\input{chapter6/chapter6}
+
+\printbibliography[title={Bibliographie}, heading=bibintoc]
+
+\end{document}

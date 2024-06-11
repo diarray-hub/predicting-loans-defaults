@@ -1,0 +1,35 @@
+\section{Métriques}
+\label{chap5.section1}
+Un métrique est tout simplement une unité de mésure, dans le contexte de l'apprentissage automatique et des problèmes de classification il réfère surtout à une statistique qui résume en un nombre la capacité d'un modèle à distinguer les différentes classes. Alors techniquement on pourrait utiliser la fonction de perte comme un métrique mais il faudra aussi expliquer tout ce qui lui est liée pour que les gens puissent correctement interprêter ses valeurs. Pour cette raison, on choisit généralement des métriques plus simples pour évaluer un modèle.
+
+Quand on a un modèle de classification binaire déjà entraîné, on cherche à attester le pouvoir de prédiction du modèle afin de savoir quel niveau de confiance peut-on placer en lui. Pour cela on va demander au modèle de prédire les classes de certains exemples qui ne se trouvaient pas dans l'ensemble d'entraînement et donc pour lesquels le modèle ne connaît pas la vraie éttiquette mais nous si. Ce nouvel ensemble de données étiquettées est appélé: \textbf{ensemble de test} et il est typiquement enlevé de l'ensemble des données avant l'entrainement créant un ensemble de données pour l'entraînement et un autre ensemble (généralement beaucoup plus petit) pour tester les modèles entraînés. Comme je l'ai dit à la fin de la section \ref{chap3.section3}, dans mes traveaux l'ensemble de test correspond à \textbf{5\%} de l'ensemble de données soit à peu près 77.000 exemples sur 1.526.659. Les statistiques que nous allons analyser dans la prochaine section sont donc les résultats des différents modèles sur cet ensemble de test, sauf pour le modèle de détection d'anomalies qui n'a été entraîné que sur les exemples de la classe 0 et à donc un ensemble de test un peu plus grand (environ 55.000 de plus) constitué d'exemples des deux classes.
+
+Pour revenir dans le vif du sujet, quand nous avons un modèle déjà entraîné que nous souhaitons utiliser pour de la classification, il n'y a que quatre cas de figure possibles: Soit le modèle prédit à raison qu'un exemple \(x_j\) est de la classe positive (\(y_j = \hat{y}_j = 1\)) où \(y_j\) est la vraie étiquette et \(\hat{y}_j\) la prédiction du modèle, on va appeler ce genre de prédiction correcte \textbf{VRAI POSITIF (VP)}; soit le modèle prédit à raison que l'exemple est de la classe négative (\(y_j = \hat{y}_j = 0\)), ce qu'on va appeler \textbf{VRAI NÉGATIF (VN)}; soit il prédit à tort que l'exemple est de la classe positive (\(y_j = 0\) et \(\hat{y}_j = 1\)) \textbf{FAUX POSITIF (FP)}; soit enfin il prédit à tort que l'exemple est de la classe négative (\(y_j = 1\) et \(\hat{y}_j = 0\)) \textbf{FAUX NÉGATIF (FN)}. De là on peut tirer le tableau \ref{tab:tab2} appélé \textbf{Matrice de confusion}.
+
+\begin{table}
+    \centering
+    \begin{tabular}{ c|c|c| }
+         & Prédicion positive & Prédicion négative \\
+         \hline
+        Étiquette Positive & VP & FN \\
+        \hline
+        Étiquette Négative & FP & VN \\
+        \hline
+    \end{tabular}
+    \caption{La matrice de confusion}
+    \label{tab:tab2}
+\end{table}
+
+Traditionnellement le métrique par excellence des modèles de classification est la \textbf{justesse de classification (Accuracy)} qui mésure le pourcentage de prédiction correcte que le modèle a fait: \[Accuracy = \frac{VP + VN}{VP + VN + FP + FN}\] Le problème est que ce métrique ne convient pas du tout à un ensemble de données déséquilibré car comme on la vue précédemment, un modèle qui prédit la classe 0 à chaque fois sera juste dans 97\% des cas avec l'ensemble de données que nous avons. Ce qui fait que la justesse de classification uniquement ne nous dira rien sur le niveau réelle du modèle à part qu'il triche.
+
+Par conséquent, on a besoin de métriques plus adaptés qui nous disent exactement ce que l'on veut savoir sur le modèle. Pour ma part j'ai choisi de me concentrer sur des métriques qui nous disent plutôt à quel point le modèle est capable de reconnaître les exemples de la classe positive, c'est-à-dire à quel point le modèle est bon pour reconnaître les clients qui feront défaut sur leur prêt. Selon moi, c'est la capacité la plus crucial dans notre cas précis, un modèle beaucoup trop tolérent avec la classe positive causera de serieux dégats si il était utiliser par des professionnels dans le monde réel.
+
+Le premier métrique que j'ai rajouté à la justesse de classification est le \textbf{rappel (recall)} qui mésure le pourcentage d'exemple de la classe positive que le modèle a correctement détecté, il est défini par:\[recall = \frac{VP}{VP + FN}\] Ce métrique nous permettra de tester la capacité du modèle à reconnaître les clients qui sont plus susceptibles de faire défaut sur leur prêt.
+
+Le second métrique que j'ai donc ajouté à la justesse de classification et au rappel est la \textbf{précision} qui mésure le pourcentage d'exemples prédit comme positifs par le modèle et qui étaient vraiment positifs. Ce métrique est très important car il permet de mésurer l'effet des poids des différentes classes sur le modèle car si l'on pénalise gravement les erreurs de classification de la classe positive comme j'ai dit l'avoir fait dans la section \ref{chap4.sec9.sub2}; il y'a des chances que le modèle se mette à crier beaucoup trop souvent au loup, c'est-à-dire prédire la classe positive au moindre soupçon, ce qui aura certes pour effet d'augmenter le pourcentage de la classe positive qu'il detectera correctement (augmenter le rappel) mais au prix de classifier injustement plus de bonnes démandes potentielles comme des gens qui échoueront à rembourser leur prêt. La précision nous permettra donc de savoir parmi toutes les fois où le modèle a crié au loup combien de fois avait-il raison. La precision est défini par \[precision = \frac{VP}{VP + FP}\]
+
+Et enfin le dernier métrique est la \textbf{surface sous la courbe de ROC (AUC)}. La courbe caractéristique de fonctionnement ou \textit{receiver operating characteristic curve} (ROC) est une courbe où l'axe des \(X\) représente le taux de prédictions FP (\(\%FP = FP / (FP + VN)\)) du modèle et l'axe des \(Y\) le taux de prédictions VP  (\(\%VP = VP / (VP + FN)\)), ce dernier est un synonyme du rappel. Le point idéal sur la courbe ROC serait donc le point (0,1), c'est-à-dire que tous les exemples positifs sont classés correctement et aucun exemple négatif n'est classé à tort comme positif. La courbe représente le taux de FP et de VP du modèle avec différents seuil de classification. 
+
+La surface sous la courbe de ROC ou \textit{Area under the ROC curve (AUC)} est une probabilité qui indique le pourcentage de chances que le modèle de classification fasse correctement la distinction entre une instance positive choisie au hasard et une instance négative choisie au hasard. C'est une valeur entre 0 et 1, où 1 veut dire que le modèle a un pouvoir de prédiction parfait et 0.5 veut dire qu'il n'est pas meilleur qu'une supposition aléatoire. 
+
+Les modèles que j'ai entraîné tous été évalués par rapport à ces quatres métriques et les résultats sont présentés dans la section 5.2. 
